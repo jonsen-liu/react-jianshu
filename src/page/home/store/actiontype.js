@@ -1,0 +1,1 @@
+export const HOME_SET_INFI = 'home_set_info'

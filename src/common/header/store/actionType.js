@@ -1,0 +1,5 @@
+export const HANDLE_FOCUS_INPUT = 'handle_focus_input'
+export const HEADER_LIST = 'header_list'
+export const HANDL_MOUSE_ENTER = 'handle_mouse_enter'
+export const HANDL_MOUSE_LEAVE = 'handle_mouse_leave'
+export const HANDL_CHANGE_PAGE = 'handle_change_page'
