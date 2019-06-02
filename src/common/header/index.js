@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   HeaderWrapper,
   Logo,
@@ -20,7 +21,19 @@ import { actionCreators } from './store'
 class Header extends Component {
 
   render() {
-    const { focused, mouseIn, list, page, totalPage, handleInputFocus, handleInputBlur, handlMouseEnter, handlMouseLeave, handlChangePage } = this.props
+    const { 
+      focused, 
+      mouseIn, 
+      login, 
+      list, 
+      page, 
+      totalPage, 
+      handleInputFocus, 
+      handleInputBlur, 
+      handlMouseEnter, 
+      handlMouseLeave, 
+      handlChangePage 
+    } = this.props
     const itemList = []
     if (list.size > 0) {
       for (let i = page * 10; i < (page + 1) * 10; i++) {
@@ -32,11 +45,17 @@ class Header extends Component {
     return (
       <div style={{ borderBottom: '1px solid #f0f0f0' }}>
         <HeaderWrapper>
-          <Logo />
+
+          <Link to='/'>
+            <Logo />
+          </Link>
+
           <Nav>
             <NavItem className='left active'>首页</NavItem>
             <NavItem className='left'>下载APP</NavItem>
-            <NavItem className='right'>登陆</NavItem>
+            <Link to={'/login'}>
+              <NavItem className='right'>{ login ?'退出' : '登陆'}</NavItem>
+            </Link>
             <NavItem className='right'>
               <i className="iconfont">&#xe636;</i>
             </NavItem>
@@ -47,7 +66,7 @@ class Header extends Component {
             >
               <NavWrapper className={focused ? 'focused' : ''}>
                 <NavSearch
-                  onFocus={()=>{handleInputFocus(list.size)}}
+                  onFocus={() => { handleInputFocus(list.size) }}
                   onBlur={handleInputBlur}
                 />
                 <i className="iconfont">&#xe62d;</i>
@@ -98,6 +117,7 @@ const mapStateToProps = (state) => {
     list: state.getIn(['header', 'list']),
     page: state.getIn(['header', 'page']),
     totalPage: state.getIn(['header', 'totalPage']),
+    login: state.getIn(['login', 'login'])
   }
 }
 

@@ -1,5 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { actionCreators } from '../store'
+
 import {
   ListWrapper,
   ListItem,
@@ -8,19 +11,21 @@ import {
 } from '../style'
 
 const List = (props) => {
-  const { homeList } = props
+  const { homeList, handleToReadMore } = props
   return (
     <ListWrapper>
       {
-        homeList.map((item) =>
-          <ListItem key={item.get('id')}>
-            {
-              item.get('imgUrl') && <img src={item.get('imgUrl')} alt={item.get('title')}/>
-            }
-            <h1>{item.get('title')}</h1>
-            <p>
-              {item.get('content')}
-            </p>
+        homeList.map((item, index) =>
+          <ListItem key={index}>
+            <Link to={'/detail/' + item.get('id')} >
+              {
+                item.get('imgUrl') && <img src={item.get('imgUrl')} alt={item.get('title')} />
+              }
+              <h1>{item.get('title')}</h1>
+              <p>
+                {item.get('content')}
+              </p>
+            </Link>
             <ItemFoot>
               {
                 item.get('grade') && (
@@ -43,7 +48,7 @@ const List = (props) => {
           </ListItem>
         )
       }
-      <LoadMore>阅读更多</LoadMore>
+      <LoadMore onClick={handleToReadMore}>阅读更多</LoadMore>
     </ListWrapper>
   )
 }
@@ -54,4 +59,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, null)(List)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleToReadMore() {
+      dispatch(actionCreators.ToReadMore())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List)

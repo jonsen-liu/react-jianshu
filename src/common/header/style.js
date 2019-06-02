@@ -8,9 +8,7 @@ export const HeaderWrapper = styled.div`
   max-width: 1440px;
   margin: 0 auto;
 `
-export const Logo = styled.a.attrs({
-  href: '/'
-})`
+export const Logo = styled.span`
   position: absolute;
   top: 0;
   left: 0;

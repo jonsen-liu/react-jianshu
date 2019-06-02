@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import Topic from './components/Topic'
 import List from './components/List'
@@ -10,9 +10,10 @@ import {
   HomeWrapper,
   Homeleft,
   HomeRight,
+  BackTop
 } from './style'
 
-class Home extends Component {
+class Home extends PureComponent {
   render() {
     return (
       <HomeWrapper>
@@ -28,11 +29,46 @@ class Home extends Component {
           <Recommend />
           <Writer />
         </HomeRight>
+        {
+          this.props.showScroll && <BackTop
+            onClick={
+              this.handleGoTop
+            }
+          >回到顶部</BackTop>
+        }
       </HomeWrapper>
     )
   }
-  componentDidMount() {
+  componentDidMount = () => {
     this.props.changeHomeData()
+    this.handleScrollY()
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener('scroll', this.props.changeScrollShow)
+  }
+
+  handleGoTop = () => {
+    let nowScrollY = window.scrollY
+    let timeScrolly = setInterval(() => {
+      nowScrollY = nowScrollY / 1.2
+      window.scrollTo(0, nowScrollY)
+      if (nowScrollY <= 10) {
+        window.scrollTo(0, 0)
+        clearInterval(timeScrolly)
+      }
+    }, 20)
+  }
+
+  handleScrollY = () => {
+    window.addEventListener('scroll', this.props.changeScrollShow)
+  }
+
+}
+
+const mapStateToprops = (state) => {
+  return {
+    showScroll: state.getIn(['home', 'showScroll'])
   }
 }
 
@@ -41,8 +77,12 @@ const mapDispatchToProps = (dispatch) => {
     changeHomeData() {
       const action = actionCreators.getHomeInfo()
       dispatch(action)
+    },
+    changeScrollShow() {
+      let scroll = document.documentElement.scrollTop
+      dispatch(actionCreators.getScrollTop(scroll > 200))
     }
   }
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToprops, mapDispatchToProps)(Home)

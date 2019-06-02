@@ -207,3 +207,15 @@ export const WriterLookAll = styled.a`
   border: 1px solid #dcdcdc;
   border-radius: 4px;
 `
+
+export const BackTop = styled.div`
+  position: fixed;
+  right: 100px;
+  bottom: 100px;
+  width: 60px;
+  height: 60px;
+  line-height: 30px;
+  border: 1px solid #ccc;
+  font-size: 24px;
+  text-align: center;
+`
